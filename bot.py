@@ -66,18 +66,20 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_prices(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    tickers = [ctx.args[0].upper()] if ctx.args else TICKERS
     await update.message.reply_text("⏳ Загружаю котировки...")
     parts = []
-    for t in TICKERS:
+    for t in tickers:
         q = get_quote(t)
         parts.append(format_quote(q) if q else f"❌ {t}: данные недоступны")
     await update.message.reply_text("\n\n".join(parts), parse_mode="HTML")
 
 
 async def cmd_forecast(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    tickers = [ctx.args[0].upper()] if ctx.args else TICKERS
     await update.message.reply_text("⏳ Анализирую...")
     parts = []
-    for t in TICKERS:
+    for t in tickers:
         f = get_forecast(t)
         parts.append(format_forecast(f) if f else f"❌ {t}: недостаточно данных")
     await update.message.reply_text(
@@ -88,9 +90,10 @@ async def cmd_forecast(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 async def cmd_news(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    tickers = [ctx.args[0].upper()] if ctx.args else TICKERS
     await update.message.reply_text("⏳ Собираю новости...")
     parts = []
-    for t in TICKERS:
+    for t in tickers:
         items = get_news(t)
         parts.append(format_news(t, items))
     await update.message.reply_text("\n\n".join(parts), parse_mode="HTML", disable_web_page_preview=True)
